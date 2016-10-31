@@ -1,7 +1,9 @@
 package com.netcracker.backend.service;
 
 import com.netcracker.backend.dao.Dao;
-import com.netcracker.backend.exceptions.*;
+import com.netcracker.backend.exceptions.DaoException;
+import com.netcracker.backend.exceptions.ServErrorCode;
+import com.netcracker.backend.exceptions.ServException;
 import com.netcracker.entities.Student;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -69,11 +71,12 @@ public class StudentServiceImpl implements StudentService {
      * @throws ServException catch DaoException, create new ServException and pushing up.
      */
     @Override
-    public Boolean saveStudent(Student student) throws ServException {
+    public Student saveStudent(Student student) throws ServException {
         try {
-            studentDao.add(student);
+            Integer studentId = studentDao.add(student);
             log.info("Adding student:" + student);
-            return true;
+            Student savedStudent = getStudentById(studentId);
+            return savedStudent;
         } catch (DaoException e) {
             throw new ServException(e, ServErrorCode.NC_SERV_003);
         }
@@ -106,14 +109,20 @@ public class StudentServiceImpl implements StudentService {
      * @throws ServException catch DaoException, create new ServException and pushing up.
      */
     @Override
-    public Boolean updateStudent(Student student) throws ServException {
+    public Student updateStudent(Integer id, Student student) throws ServException {
         try {
-            studentDao.update(student);
-            log.info("Updating student:" + student);
-            return true;
+            if (id != null) {
+                Student preparedStudent = Student.builder().id(id).name(student.getName()).surname(student.getSurname()).build();
+                studentDao.update(preparedStudent);
+                log.info("Updating student:" + student);
+                return getStudentById(id);
+            }
         } catch (DaoException e) {
             throw new ServException(e, ServErrorCode.NC_SERV_006);
+        } catch (ServException ex) {
+            throw new ServException(ex, ServErrorCode.NC_SERV_004);
         }
+        return null;
     }
 
     /**

@@ -14,6 +14,7 @@ public class DaoBeans {
 
     /**
      * Create studentDao Bean.
+     *
      * @return studentDao Bean.
      */
     @Bean(name = "studentDao")

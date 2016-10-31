@@ -13,11 +13,11 @@ public interface StudentService {
 
     public Boolean deleteStudentById(Integer id) throws ServException;
 
-    public Boolean saveStudent(Student student) throws ServException;
+    public Student saveStudent(Student student) throws ServException;
 
     public Student getStudentById(Integer id) throws ServException;
 
-    public Boolean updateStudent(Student student) throws ServException;
+    public Student updateStudent(Integer id, Student student) throws ServException;
 
     public List<Student> findStudents(String param) throws ServException;
 

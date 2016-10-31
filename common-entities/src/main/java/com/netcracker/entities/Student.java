@@ -3,7 +3,6 @@ package com.netcracker.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -27,11 +26,9 @@ public class Student implements Serializable {
     @Column(name = "F_ID")
     private Integer id;
 
-    @Size(min = 3, max = 20)
     @Column(name = "F_NAME")
     private String name;
 
-    @Size(min = 3, max = 20)
     @Column(name = "F_SURNAME")
     private String surname;
 
